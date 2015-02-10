@@ -1,0 +1,83 @@
+prompt() {
+	PREVIOUS_RET="$?"
+	
+    if [ $color_prompt = yes ] ; then
+        NOCOLOR="\033[0m"
+
+		BLACK="\033[01;30m"
+        RED="\033[01;31m"
+        GREEN="\033[01;32m"
+        YELLOW="\033[01;33m"
+        BLUE="\033[01;34m"
+        PURPLE="\033[01;35m"
+        CYAN="\033[01;36m"
+        GRAY="\033[01;37m"
+
+        DARK_RED="\033[00;31m"
+        DARK_GREEN="\033[00;32m"
+        DARK_YELLOW="\033[00;33m"
+        DARK_BLUE="\033[00;34m"
+        DARK_PURPLE="\033[00;35m"
+        DARK_CYAN="\033[00;36m"
+        DARK_GRAY="\033[00;37m"
+	else
+        NOCOLOR=''
+        BLACK=''
+        RED=''
+        GREEN=''
+        YELLOW=''
+        BLUE=''
+        PURPLE=''
+        CYAN=''
+        GRAY=''
+        DARK_RED=''
+        DARK_GREEN=''
+        DARK_YELLOW=''
+        DARK_BLUE=''
+        DARK_PURPLE=''
+        DARK_CYAN=''
+        DARK_GRAY=''
+    fi
+ 
+    CONTEXT=''
+ 	PREVIOUS_RET_FAILED=""
+
+	if [ $PREVIOUS_RET -gt 0 ] ; then
+		PREVIOUS_RET_FAILED="$RED:( code retour = $PREVIOUS_RET$NOCOLOR\n"
+	fi
+	
+    BZRBRANCH=$(bzr info 2> /dev/null | grep 'checkout of branch' | grep -o '\.bzrroot.*' | sed 's/\.bzrroot\/\(.*\)/\1/' | sed 's/\/$//' )
+    if [ $? -eq 0 ] ; then
+        if [[ "$BZRBRANCH" ]]; then
+            BZRSTATUS=$(bzr status -S 2> /dev/null | grep -o '^..' | sed 's/ //g' | sort -u | tr '\n' ' ' | sed 's/ //g')
+            CHANGES=$(echo $BZRSTATUS | sed 's/[?]//g')
+            UNKNOWN=$(echo $BZRSTATUS | sed 's/[^?]//g')
+            if [[ "$CHANGES" ]]; then
+                CONTEXT=" :: $PURPLE[$BZRSTATUS]$NOCOLOR ${RED}mel:$BZRBRANCH$NOCOLOR"
+            elif [[ "$UNKNOWN" ]]; then
+                CONTEXT=" :: $PURPLE[$BZRSTATUS]$NOCOLOR ${YELLOW}mel:$BZRBRANCH$NOCOLOR"
+            else
+                CONTEXT=" :: ${GREEN}mel:$BZRBRANCH$NOCOLOR"
+            fi
+        fi
+    fi
+ 
+	L_SHELL_LABEL=""
+	if [[ "$SHELL_LABEL" ]]; then
+		L_SHELL_LABEL="$SHELL_LABEL "
+	fi 
+ 
+    PS1="$PREVIOUS_RET_FAILED\[$PURPLE\]\A\[$NOCOLOR\] \[$GREEN\]\u@\h\[$NOCOLOR\]:\[$BLUE\]\w/\[$NOCOLOR\]$CONTEXT\n\[$CYAN\]$L_SHELL_LABEL\$\[$NOCOLOR\] "
+ 
+    case "$TERM" in
+    xterm*|rxvt*)
+        PS1="\[\e]0;\u@\h: \w\a\]$PS1"
+        ;;
+    *)
+		PS1="\$"
+        ;;
+    esac
+}
+
+color_prompt=yes
+PROMPT_COMMAND=prompt
