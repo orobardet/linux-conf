@@ -33,6 +33,7 @@ endfunction
 autocmd User AirlineAfterInit call AirlineInit()
 
 syntax on
+filetype plugin indent on
 set t_Co=256
 if $VIM_BG == "light"
   set bg=light
