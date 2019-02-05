@@ -220,8 +220,8 @@ color_prompt=yes
 #PROMPT_COMMAND=prompt
 
 POWERLINE_GO_MODULES="termtitle,exit,duration,docker,venv,vgo,newline,user,perms,cwd,git,newline,jobs,time,root"
-#POWERLINE_GO_MODULES="nix-shell,venv,user,host,ssh,cwd,perms,git,hg,jobs,exit,root,newline,vgo"
 POWERLINE_GO_OPTS="-colorize-hostname -numeric-exit-codes -cwd-max-depth 5 -max-width 100 -shorten-gke-names"
+POWERLINE_PATH_ALIASES=(\~/dev/go/src=@GOSRC \~/dev/_metriks=@METRIKS)
 INTERACTIVE_BASHPID_TIMER="/tmp/${USER}.START.$$"
 PS0='$(echo $SECONDS > "$INTERACTIVE_BASHPID_TIMER")'
 
@@ -237,7 +237,15 @@ function _update_ps1() {
 	    rm -f "$INTERACTIVE_BASHPID_TIMER"
 	fi
 
-	PS1="$($HOME/bin/powerline-go -modules "$POWERLINE_GO_MODULES" $POWERLINE_GO_OPTS -duration $__DURATION -error $__ERRCODE)"
+	local l_powerline_cmd="$HOME/bin/powerline-go -modules "$POWERLINE_GO_MODULES" $POWERLINE_GO_OPTS -duration $__DURATION -error $__ERRCODE"
+	if [[ ${#POWERLINE_PATH_ALIASES[@]} -ne 0 ]] ; then
+		local old_ifs=$IFS
+   		IFS="," 
+		l_powerline_cmd="$l_powerline_cmd -path-aliases ${POWERLINE_PATH_ALIASES[*]}"
+		IFS=$old_ifs
+	fi
+
+	PS1="$($l_powerline_cmd)"
 }
 
 if [[ "$TERM" != "linux" && ! $PROMPT_COMMAND =~ _update_ps1 ]] ; then

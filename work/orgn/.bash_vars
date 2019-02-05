@@ -6,9 +6,11 @@ export PATH="/snap/bin:$PATH"
 
 export PATH="$HOME/scripts:$HOME/bin:$HOME/.local/bin:/ke/scripts:/ke/bin:/ke/lib/bash/:$PATH"
 export PATH=$PATH:${HOME}/.local/TreeTagger/cmd:${HOME}/.local/TreeTagger/bin
-if which yarn > /dev/null 2>&1 ; then
-	export PATH="$PATH:$(yarn global bin)"
-fi
+
+# Uncommented for now as is time consuming each time a bash start
+#if which yarn > /dev/null 2>&1 ; then
+#	export PATH="$PATH:$(yarn global bin)"
+#fi
 
 
 export TERM=xterm-256color
