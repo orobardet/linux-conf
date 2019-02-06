@@ -12,7 +12,6 @@ export PATH=$PATH:${HOME}/.local/TreeTagger/cmd:${HOME}/.local/TreeTagger/bin
 #	export PATH="$PATH:$(yarn global bin)"
 #fi
 
-
 export TERM=xterm-256color
 
 #export PAGER="most -u"
@@ -34,4 +33,8 @@ export NODE_EXTRA_CA_CERTS="/etc/ssl/certs/ca-certificates.crt"
 
 export SNYK_API=https://snyk.nd-int-ops-paas.itn.intraorange/api
 export SNYK_TOKEN=fc691a92-f910-428e-b8f8-54f4b5404288
+
+export NVM_DIR="$HOME/.nvm"                                                                                         
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 

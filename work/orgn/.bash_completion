@@ -1,0 +1,3 @@
+source <(kubectl completion bash)                                                                                   
+complete -C /home/orobardet/bin/vault vault
+

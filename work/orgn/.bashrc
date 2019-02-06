@@ -11,97 +11,6 @@
 
 PROMPT_HOST_SUFFIX=".vdi"
 
-prompt() {
-	PREVIOUS_RET="$?"
-	
-	if [ $color_prompt = yes ] ; then
-		NOCOLOR="\033[0m"
-
-		BLACK="\033[01;30m"
-		RED="\033[01;31m"
-		GREEN="\033[01;32m"
-		YELLOW="\033[01;33m"
-		BLUE="\033[01;34m"
-		PURPLE="\033[01;35m"
-		CYAN="\033[01;36m"
-		GRAY="\033[01;37m"
-
-		DARK_RED="\033[00;31m"
-		DARK_GREEN="\033[00;32m"
-		DARK_YELLOW="\033[00;33m"
-		DARK_BLUE="\033[00;34m"
-		DARK_PURPLE="\033[00;35m"
-		DARK_CYAN="\033[00;36m"
-		DARK_GRAY="\033[00;37m"
-	else
-		NOCOLOR=''
-		BLACK=''
-		RED=''
-		GREEN=''
-		YELLOW=''
-		BLUE=''
-		PURPLE=''
-		CYAN=''
-		GRAY=''
-		DARK_RED=''
-		DARK_GREEN=''
-		DARK_YELLOW=''
-		DARK_BLUE=''
-		DARK_PURPLE=''
-		DARK_CYAN=''
-		DARK_GRAY=''
-	fi
- 
-	CONTEXT=''
- 	PREVIOUS_RET_FAILED=""
-
-	if [ $PREVIOUS_RET -gt 0 ] ; then
-		PREVIOUS_RET_FAILED="$RED:( code retour = $PREVIOUS_RET$NOCOLOR\n"
-	fi
-	
-	BZRBRANCH=$(bzr info 2> /dev/null | grep 'checkout of branch' | grep -o '\.bzrroot.*' | sed 's/\.bzrroot\/\(.*\)/\1/' | sed 's/\/$//' )
-	if [ $? -eq 0 ] ; then
-		if [[ "$BZRBRANCH" ]]; then
-		BZRSTATUS=$(bzr status -S 2> /dev/null | grep -v "shelf exists" | grep -o '^..' | sed -e 's/ //g' -e 's/[-+]//g' | sort -u | xargs echo)
-		CHANGES=$(echo $BZRSTATUS | sed 's/[?]//g')
-		UNKNOWN=$(echo $BZRSTATUS | sed 's/[^?]//g')
-		SHELVE=""
-		if ! bzr shelve --list > /dev/null 2>&1 ; then
-		SHELVE="$YELLOW[SHELVE]$NOCOLOR "
-		fi
-		if [[ "$CHANGES" ]]; then
-		CONTEXT=" :: $SHELVE$PURPLE[$BZRSTATUS]$NOCOLOR ${RED}mel:$BZRBRANCH$NOCOLOR"
-		elif [[ "$UNKNOWN" ]]; then
-		CONTEXT=" :: $SHELVE$PURPLE[$BZRSTATUS]$NOCOLOR ${YELLOW}mel:$BZRBRANCH$NOCOLOR"
-		else
-		CONTEXT=" :: $SHELVE${GREEN}mel:$BZRBRANCH$NOCOLOR"
-		fi
-		fi
-	fi
-
-	L_SHELL_LABEL=""
-	if [[ "$SHELL_LABEL" ]]; then
-		L_SHELL_LABEL="$SHELL_LABEL "
-	fi 
- 
-	PROMPT_HOST_SUFFIX_FORMATED=$PROMPT_HOST_SUFFIX
-	if [ -n "$PROMPT_HOST_COLOR" ] ; then
-		eval "PROMPT_HOST_COLOR_SELECTED=$"${PROMPT_HOST_COLOR}
-		PROMPT_HOST_SUFFIX_FORMATED=${PROMPT_HOST_COLOR_SELECTED}${PROMPT_HOST_SUFFIX}${NOCOLOR}
-	fi
- 
-    PS1="$PREVIOUS_RET_FAILED\[$PURPLE\]\A\[$NOCOLOR\] \[$GREEN\]\u@\h${PROMPT_HOST_SUFFIX_FORMATED}\[$NOCOLOR\]:\[$BLUE\]\w/\[$NOCOLOR\]$CONTEXT\n\[$CYAN\]$L_SHELL_LABEL\$\[$NOCOLOR\] "
- 
-    case "$TERM" in
-    xterm*|rxvt*)
-        PS1="\[\e]0;\u@\h${PROMPT_HOST_SUFFIX}: \w\a\]$PS1"
-        ;;
-    *)
-		PS1="\$"
-        ;;
-    esac
-}
-
 function setlabel() {
 	export SHELL_LABEL="$@"
 }
@@ -216,8 +125,11 @@ if [ -f ~/.bash_vars ]; then
     . ~/.bash_vars
 fi
 
+if [ -f ~/.bash_completion ]; then
+    . ~/.bash_completion
+fi
+
 color_prompt=yes
-#PROMPT_COMMAND=prompt
 
 POWERLINE_GO_MODULES="termtitle,exit,duration,docker,venv,vgo,newline,user,perms,cwd,git,newline,jobs,time,root"
 POWERLINE_GO_OPTS="-colorize-hostname -numeric-exit-codes -cwd-max-depth 5 -max-width 100 -shorten-gke-names"
@@ -264,6 +176,3 @@ if [[ "$TERM" != "linux" && ! $PROMPT_COMMAND =~ _update_ps1 ]] ; then
 	PROMPT_COMMAND="$PROMPT_COMMAND;history -a"
 fi
 
-source <(kubectl completion bash)
-
-complete -C /home/orobardet/bin/vault vault
