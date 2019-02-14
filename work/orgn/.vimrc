@@ -47,7 +47,6 @@ endfunction
 augroup mine | autocmd User AirlineAfterInit call AirlineInit() | augroup END
 
 syntax on
-filetype plugin indent on
 set mouse=a
 set ttymouse=xterm
 set t_Co=256
@@ -74,8 +73,6 @@ nnoremap <F5> :set number! number?<CR>
 imap <F5> <C-o><F5>
 nnoremap <F4> :set wrap! wrap?<CR>
 imap <F4> <C-o><F4>
-imap <Esc>[1;2C :bnext<CR>
-imap <Esc>[1;2D :bprev<CR>
 nnoremap <C-n> <Esc>:bnext<CR>
 nnoremap <C-b> <Esc>:bprev<CR>
 set laststatus=2

@@ -138,7 +138,6 @@ INTERACTIVE_BASHPID_TIMER="/tmp/${USER}.START.$$"
 PS0='$(echo $SECONDS > "$INTERACTIVE_BASHPID_TIMER")'
 
 function _update_ps1() {
-    #PS1="$(powerline-shell $?)"
 	local __ERRCODE=$?
 
 	local __DURATION=0
