@@ -5,8 +5,11 @@ let g:airline#extensions#ale#enabled = 1
 let g:ale_change_sign_column_color = 1
 let g:ale_python_pyls_executable = 'pyls'
 "let b:ale_linters = {
-"\   'python': ['pyls'],
+			"\   'python': ['pyls'],
 "\}
+let g:ale_fixers = {
+\'sh' :['shfmt','remove_trailing_lines', 'trim_whitespace']
+\}
 hi SignColumn ctermbg=none
 hi ALESignColumnWithoutErrors ctermbg=none
 hi ALESignColumnWithErrors ctermbg=magenta
@@ -18,42 +21,53 @@ Plug 'junegunn/vim-emoji'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'w0rp/ale'
 call plug#end()
-set completefunc=emoji#complete
+"set completefunc=emoji#complete
+augroup OmniCompletionSetup
+    autocmd!
+    autocmd FileType c          set omnifunc=ccomplete#Complete
+    autocmd FileType php        set omnifunc=phpcomplete#CompletePHP
+    autocmd FileType python     set omnifunc=jedi#completions
+    autocmd FileType ruby       set omnifunc=rubycomplete#Complete
+    autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+    autocmd FileType html       set omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType css        set omnifunc=csscomplete#CompleteCSS
+    autocmd FileType xml        set omnifunc=xmlcomplete#CompleteTags
+augroup END
 let g:bufferline_echo = 0
 let g:airline_powerline_fonts = 1
-let g:airline_theme='minimalist'
+let g:airline_theme='distinguished'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'default'
 let g:airline_skip_empty_sections = 1
 let g:airline_mode_map = {
-    \ '__' : '-',
-    \ 'n'  : 'N',
-    \ 'i'  : 'I',
-    \ 'R'  : 'R',
-    \ 'c'  : 'C',
-    \ 'v'  : 'V',
-    \ 'V'  : 'V',
-    \ '^V' : 'V',
-    \ 's'  : 'S',
-    \ 'S'  : 'S',
-    \ '^S' : 'S',
-    \ }
+			\ '__' : '-',
+			\ 'n'  : 'N',
+			\ 'i'  : 'I',
+			\ 'R'  : 'R',
+			\ 'c'  : 'C',
+			\ 'v'  : 'V',
+			\ 'V'  : 'V',
+			\ '^V' : 'V',
+			\ 's'  : 'S',
+			\ 'S'  : 'S',
+			\ '^S' : 'S',
+			\ }
 function! AirlineInit()
-    call airline#parts#define_text('ort_keys_help', 'F2:paste F4:wrap F5:num')
-    call airline#parts#define_accent('ort_keys_help', 'red')
-    call airline#parts#define_accent('ort_keys_help', 'bold')
+	call airline#parts#define_text('ort_keys_help', 'F2:paste F4:wrap F5:num')
+	call airline#parts#define_accent('ort_keys_help', 'red')
+	call airline#parts#define_accent('ort_keys_help', 'bold')
 	let g:airline_section_c = airline#section#create_left(['file', 'ort_keys_help'])
 endfunction
 augroup mine | autocmd User AirlineAfterInit call AirlineInit() | augroup END
 
 syntax on
-set mouse=a
+"set mouse=a
 set ttymouse=xterm
 set t_Co=256
 if $VIM_BG ==? 'light'
-  set background=light
+	set background=light
 else
-  set background=dark
+	set background=dark
 endif
 set number
 set nowrap
@@ -69,19 +83,27 @@ set ignorecase
 set pastetoggle=<F2>
 set ttimeoutlen=10
 set showtabline=2
+set completeopt=menu,menuone,preview,noselect,noinsert
 nnoremap <F5> :set number! number?<CR>
 imap <F5> <C-o><F5>
 nnoremap <F4> :set wrap! wrap?<CR>
 imap <F4> <C-o><F4>
 nnoremap <C-n> <Esc>:bnext<CR>
 nnoremap <C-b> <Esc>:bprev<CR>
+nnoremap <C-o> <Esc>:edit 
+nnoremap <C-w> <Esc>:bd<CR>
 set laststatus=2
 set statusline=%F%m%r%h%w\ [%3p%%]\ F4=WRAP\ F5=LINENUMS\ EOL=%{&ff}\ TYPE=%Y\ ENC=%{&fileencoding?&fileencoding:&encoding}%{$bomb}\ LN=%04l\ CL=%04v\ ASCII=%03.3b\ HEX=%02.2B
 hi StatusLine ctermfg=darkgray " ctermbg=black
 hi StatusLineNC cterm=none
+hi LineNr ctermfg=black
+hi CursorLineNr ctermfg=darkgray
+hi Pmenu ctermbg=black ctermfg=gray
+hi PmenuSel ctermbg=gray ctermfg=black
 if $VIM_BG ==? 'light'
 	hi Cursorline ctermbg=188 guibg=lightgrey cterm=none
 else
 	hi Cursorline ctermbg=black guibg=black cterm=none
 endif
 set wildchar=<Tab> wildmenu wildmode=full
+
