@@ -3,13 +3,22 @@ let g:ale_set_balloons = 1
 let g:ale_sign_column_always = 1
 let g:airline#extensions#ale#enabled = 1
 let g:ale_change_sign_column_color = 1
+let g:ale_open_list = 1
+let g:ale_list_window_size = 5
+let g:ale_echo_msg_format = '[%linter%] %code: %%s'
+augroup CloseLoclistWindowGroup
+  autocmd!
+  autocmd QuitPre * if empty(&buftype) | lclose | endif
+augroup END
 let g:ale_python_pyls_executable = 'pyls'
-"let b:ale_linters = {
-			"\   'python': ['pyls'],
-"\}
+let b:ale_linters = {
+\	'go': ['gofmt', 'golint', 'govet', 'golangserver'],
+\   'python': ['pyls'],
+\}
 let g:ale_fixers = {
 \'sh' :['shfmt','remove_trailing_lines', 'trim_whitespace']
 \}
+let g:ale_yaml_yamllint_options = '-c ~/.config/yamllint/config'
 hi SignColumn ctermbg=none
 hi ALESignColumnWithoutErrors ctermbg=none
 hi ALESignColumnWithErrors ctermbg=magenta
@@ -91,7 +100,16 @@ imap <F4> <C-o><F4>
 nnoremap <C-n> <Esc>:bnext<CR>
 nnoremap <C-b> <Esc>:bprev<CR>
 nnoremap <C-o> <Esc>:edit 
-nnoremap <C-w> <Esc>:bd<CR>
+nnoremap <C-q> <Esc>:bd<CR>
+nnoremap <C-Space> <Esc>:ALEComplete<CR>
+nmap <silent> <C-h> <Plug>(ale_hover><CR>
+nmap <silent> <C-p> <Plug>(ale_previous_wrap)
+nmap <silent> <C-m> <Plug>(ale_next_wrap)
+nmap <silent> <C-F9> <Plug>(ale_detail)
+nnoremap <C-k> <C-W>j
+nnoremap <C-i> <C-W>k
+nnoremap <C-j> <C-W>h
+nnoremap <C-l> <C-W>l
 set laststatus=2
 set statusline=%F%m%r%h%w\ [%3p%%]\ F4=WRAP\ F5=LINENUMS\ EOL=%{&ff}\ TYPE=%Y\ ENC=%{&fileencoding?&fileencoding:&encoding}%{$bomb}\ LN=%04l\ CL=%04v\ ASCII=%03.3b\ HEX=%02.2B
 hi StatusLine ctermfg=darkgray " ctermbg=black

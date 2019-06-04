@@ -1,3 +1,5 @@
+alias cl='colorls'
+alias l='colorls -lAh --gs --sd'
 alias lh='ll -h'
 alias suged='gksudo gedit $* &'
 alias gopn='gnome-open'
