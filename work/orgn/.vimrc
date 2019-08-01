@@ -12,11 +12,12 @@ augroup CloseLoclistWindowGroup
 augroup END
 let g:ale_python_pyls_executable = 'pyls'
 let b:ale_linters = {
+\	'sh': ['shell'],
 \	'go': ['gofmt', 'golint', 'govet', 'golangserver'],
-\   'python': ['pyls'],
+\   'python': [],
 \}
 let g:ale_fixers = {
-\'sh' :['shfmt','remove_trailing_lines', 'trim_whitespace']
+\'sh' :['remove_trailing_lines', 'trim_whitespace']
 \}
 let g:ale_yaml_yamllint_options = '-c ~/.config/yamllint/config'
 hi SignColumn ctermbg=none
@@ -41,6 +42,11 @@ augroup OmniCompletionSetup
     autocmd FileType html       set omnifunc=htmlcomplete#CompleteTags
     autocmd FileType css        set omnifunc=csscomplete#CompleteCSS
     autocmd FileType xml        set omnifunc=xmlcomplete#CompleteTags
+augroup END
+" yaml specific config
+augroup YamlConfig
+	au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
+	autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 augroup END
 let g:bufferline_echo = 0
 let g:airline_powerline_fonts = 1
@@ -93,6 +99,8 @@ set pastetoggle=<F2>
 set ttimeoutlen=10
 set showtabline=2
 set completeopt=menu,menuone,preview,noselect,noinsert
+set autoindent
+filetype plugin indent on
 nnoremap <F5> :set number! number?<CR>
 imap <F5> <C-o><F5>
 nnoremap <F4> :set wrap! wrap?<CR>
@@ -102,26 +110,32 @@ nnoremap <C-b> <Esc>:bprev<CR>
 nnoremap <C-o> <Esc>:edit 
 nnoremap <C-q> <Esc>:bd<CR>
 nnoremap <C-Space> <Esc>:ALEComplete<CR>
-nmap <silent> <C-h> <Plug>(ale_hover><CR>
-nmap <silent> <C-p> <Plug>(ale_previous_wrap)
-nmap <silent> <C-m> <Plug>(ale_next_wrap)
-nmap <silent> <C-F9> <Plug>(ale_detail)
+noremap <silent> <C-h> <Plug>(ale_hover)<CR>
+noremap <silent> <C-p> <Plug>(ale_previous_wrap)
+noremap <silent> <C-m> <Plug>(ale_next_wrap)
+noremap <silent> <C-F9> <Plug>(ale_detail)
+inoremap <silent> <C-F9> <Plug>(ale_detail)
+noremap <C-a> :w<CR>
+inoremap <C-a> <Esc>:w<CR>a
+" Keys to move between VIM pane
 nnoremap <C-k> <C-W>j
 nnoremap <C-i> <C-W>k
 nnoremap <C-j> <C-W>h
 nnoremap <C-l> <C-W>l
+" Statusline configuration
 set laststatus=2
 set statusline=%F%m%r%h%w\ [%3p%%]\ F4=WRAP\ F5=LINENUMS\ EOL=%{&ff}\ TYPE=%Y\ ENC=%{&fileencoding?&fileencoding:&encoding}%{$bomb}\ LN=%04l\ CL=%04v\ ASCII=%03.3b\ HEX=%02.2B
 hi StatusLine ctermfg=darkgray " ctermbg=black
 hi StatusLineNC cterm=none
 hi LineNr ctermfg=black
 hi CursorLineNr ctermfg=darkgray
-hi Pmenu ctermbg=black ctermfg=gray
-hi PmenuSel ctermbg=gray ctermfg=black
 if $VIM_BG ==? 'light'
 	hi Cursorline ctermbg=188 guibg=lightgrey cterm=none
 else
 	hi Cursorline ctermbg=black guibg=black cterm=none
 endif
+" Completion menu style
+hi Pmenu ctermbg=black ctermfg=gray
+hi PmenuSel ctermbg=gray ctermfg=black
 set wildchar=<Tab> wildmenu wildmode=full
 
