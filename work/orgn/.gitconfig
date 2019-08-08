@@ -16,6 +16,7 @@
 	lg = log -20 --date=short
 	pullrb = pull --rebase
 	prb = pull --rebase
+	up = "!git fetch ; git fetch -p ; git pull --rebase"
 [merge]
 	tool = meld
 [diff]
