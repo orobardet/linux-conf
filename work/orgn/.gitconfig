@@ -39,6 +39,7 @@
 	cmd = /opt/p4merge/bin/p4merge $LOCAL $REMOTE
 [format]
 	pretty = tformat:%C(auto,yellow)%h%C(auto,magenta)% G? %C(auto,blue)%>(10,trunc)%ad %C(auto,green)%<(20,trunc)%aN %C(auto,reset)%s%C(auto,red)% gD% D
-
 [protocol]
 	version = 2
+[pull]
+	rebase = true
