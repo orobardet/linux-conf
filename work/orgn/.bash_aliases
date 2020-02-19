@@ -1,6 +1,9 @@
 alias cl='colorls'
-alias l='colorls -lAh --gs --sd'
-alias lh='ll -h'
+alias ll='ls -lsah --color'
+#alias ll='lsd -lAh --group-dirs first'
+alias l='ll'
+alias e='exa -l -a --long --group --git --header --icons --group-directories-first --color-scale'
+alias eg='e --grid'
 alias suged='gksudo gedit $* &'
 alias gopn='gnome-open'
 
@@ -41,7 +44,10 @@ alias ks='kubens'
 complete -F _kube_namespaces ks
 
 alias diff='colordiff'
+alias yd='ydiff'
 
 #alias zf2='sudo /usr/share/php/ZendFramework2/bin/zftool.phar'
 
 alias prodsophiatunnel='ssh -NL 2378:localhost:2376 es001.metriks.prod.s1.p.fti.net'
+
+alias posh='pwsh'

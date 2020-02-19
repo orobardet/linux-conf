@@ -5,13 +5,14 @@
 [push]
 	default = matching
 [alias]
-	root = !pwd
+	root = rev-parse --show-toplevel
 	cdroot = !cd $(pwd)
 	st = status
 	ci = commit
 	co = checkout
 	br = branch
 	cl = clone
+	f = fetch
 	graph = log --abbrev-commit --graph -30 --date=short
 	lg = log -20 --date=short
 	pullrb = pull --rebase
@@ -38,7 +39,8 @@
 [difftool "p4mergetool"]
 	cmd = /opt/p4merge/bin/p4merge $LOCAL $REMOTE
 [format]
-	pretty = tformat:%C(auto,yellow)%h%C(auto,magenta)% G? %C(auto,blue)%>(10,trunc)%ad %C(auto,green)%<(20,trunc)%aN %C(auto,reset)%s%C(auto,red)% gD% D
+	pretty = tformat:%C(auto,yellow)%h%C(auto,magenta)% G? %C(auto,blue)%>(10,trunc)%ad %C(auto,green)%<(20,trunc)%aN%<(30,trunc)<%aE> %C(auto,reset)%s%C(auto,red)% gD% D
+
 [protocol]
 	version = 2
 [pull]
