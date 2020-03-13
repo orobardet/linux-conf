@@ -1,5 +1,5 @@
-let g:ale_completion_enabled = 1
-let g:ale_set_balloons = 1
+let g:ale_completion_enabled = 0
+let g:ale_set_balloons = 0
 let g:ale_sign_column_always = 1
 let g:airline#extensions#ale#enabled = 1
 let g:ale_change_sign_column_color = 1
@@ -17,7 +17,8 @@ let b:ale_linters = {
 \   'python': [],
 \}
 let g:ale_fixers = {
-\'sh' :['remove_trailing_lines', 'trim_whitespace']
+\'sh' :['remove_trailing_lines', 'trim_whitespace'],
+\'go' :['gofmt']
 \}
 let g:ale_yaml_yamllint_options = '-c ~/.config/yamllint/config'
 hi SignColumn ctermbg=none
@@ -30,6 +31,12 @@ Plug 'tpope/vim-fugitive'
 Plug 'junegunn/vim-emoji'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'w0rp/ale'
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'ryanoasis/vim-devicons'
+Plug 'PProvost/vim-ps1'
+"Plug 'vim-ctrlspace/vim-ctrlspace'
 call plug#end()
 "set completefunc=emoji#complete
 augroup OmniCompletionSetup
@@ -68,12 +75,14 @@ let g:airline_mode_map = {
 			\ '^S' : 'S',
 			\ }
 function! AirlineInit()
-	call airline#parts#define_text('ort_keys_help', 'F2:paste F4:wrap F5:num')
+	call airline#parts#define_text('ort_keys_help', 'F2:paste F4:wrap F5:num F6:browser')
 	call airline#parts#define_accent('ort_keys_help', 'red')
 	call airline#parts#define_accent('ort_keys_help', 'bold')
 	let g:airline_section_c = airline#section#create_left(['file', 'ort_keys_help'])
 endfunction
 augroup mine | autocmd User AirlineAfterInit call AirlineInit() | augroup END
+
+let g:NERDTreeQuitOnOpen = 1
 
 syntax on
 "set mouse=a
@@ -100,19 +109,27 @@ set ttimeoutlen=10
 set showtabline=2
 set completeopt=menu,menuone,preview,noselect,noinsert
 set autoindent
+set cindent
 filetype plugin indent on
 nnoremap <F5> :set number! number?<CR>
 imap <F5> <C-o><F5>
 nnoremap <F4> :set wrap! wrap?<CR>
 imap <F4> <C-o><F4>
+nnoremap <silent> <F6> :NERDTreeToggle<CR>
 nnoremap <C-n> <Esc>:bnext<CR>
-nnoremap <C-b> <Esc>:bprev<CR>
+nnoremap <C-p> <Esc>:bprev<CR>
+nnoremap <C-PageUp> <Esc>:bprev<CR>
+nnoremap <C-PageDown> <Esc>:bnext<CR>
 nnoremap <C-o> <Esc>:edit 
 nnoremap <C-q> <Esc>:bd<CR>
 nnoremap <C-Space> <Esc>:ALEComplete<CR>
 noremap <silent> <C-h> <Plug>(ale_hover)<CR>
 noremap <silent> <C-p> <Plug>(ale_previous_wrap)
 noremap <silent> <C-m> <Plug>(ale_next_wrap)
+inoremap <silent> <C-p> <Plug>(ale_previous_wrap)
+inoremap <silent> <C-m> <Plug>(ale_next_wrap)
+nnoremap <silent> <C-p> <Plug>(ale_previous_wrap)
+nnoremap <silent> <C-m> <Plug>(ale_next_wrap)
 noremap <silent> <C-F9> <Plug>(ale_detail)
 inoremap <silent> <C-F9> <Plug>(ale_detail)
 noremap <C-a> :w<CR>
@@ -122,9 +139,11 @@ nnoremap <C-k> <C-W>j
 nnoremap <C-i> <C-W>k
 nnoremap <C-j> <C-W>h
 nnoremap <C-l> <C-W>l
+" Navigate through tags in VIM help
+nnoremap t <C-]>
 " Statusline configuration
 set laststatus=2
-set statusline=%F%m%r%h%w\ [%3p%%]\ F4=WRAP\ F5=LINENUMS\ EOL=%{&ff}\ TYPE=%Y\ ENC=%{&fileencoding?&fileencoding:&encoding}%{$bomb}\ LN=%04l\ CL=%04v\ ASCII=%03.3b\ HEX=%02.2B
+set statusline=%F%m%r%h%w\ [%3p%%]\ F4=WRAP\ F5=LINENUMS\ F6=Browser\ EOL=%{&ff}\ TYPE=%Y\ ENC=%{&fileencoding?&fileencoding:&encoding}%{$bomb}\ LN=%04l\ CL=%04v\ ASCII=%03.3b\ HEX=%02.2B
 hi StatusLine ctermfg=darkgray " ctermbg=black
 hi StatusLineNC cterm=none
 hi LineNr ctermfg=black

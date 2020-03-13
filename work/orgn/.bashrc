@@ -47,8 +47,10 @@ case "$TERM" in
 xterm-color) color_prompt=yes ;;
 esac
 
-if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
-	source /etc/profile.d/vte.sh
+if [ -f "/etc/profile.d/vte.sh" ] ; then
+	if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
+		source /etc/profile.d/vte.sh
+	fi
 fi
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
@@ -95,12 +97,11 @@ if ! shopt -oq posix; then
 	fi
 fi
 
-alias ls='lsi'
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
 	test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-	alias ls='lsi --color=auto'
+	#alias ls='colorls --color=auto'
 	#alias dir='dir --color=auto'
 	#alias vdir='vdir --color=auto'
 
@@ -108,11 +109,6 @@ if [ -x /usr/bin/dircolors ]; then
 	alias fgrep='fgrep --color=auto'
 	alias egrep='egrep --color=auto'
 fi
-
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -141,7 +137,7 @@ fi
 
 color_prompt=yes
 
-POWERLINE_GO_MODULES="termtitle,exit,duration,melvis,docker,venv,vgo,newline,user,perms,cwd,git,newline,jobs,time,root"
+POWERLINE_GO_MODULES="termtitle,exit,duration,melvis,docker,venv,vgo,newline,host,user,perms,cwd,git,newline,jobs,time,root"
 POWERLINE_GO_OPTS="-colorize-hostname -numeric-exit-codes -cwd-max-depth 5 -max-width 100 -shorten-gke-names"
 POWERLINE_PATH_ALIASES=(\~/dev/go/src=@GOSRC \~/dev/_metriks=@METRIKS)
 INTERACTIVE_BASHPID_TIMER="/tmp/${USER}.START.$$"

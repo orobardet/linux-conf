@@ -1,6 +1,8 @@
 #!/bin/bash
 
-. ~/.local/share/icons-in-terminal/icons_bash.sh
+if [ -f "~/.local/share/icons-in-terminal/icons_bash.sh" ] ; then
+	. ~/.local/share/icons-in-terminal/icons_bash.sh
+fi
 
 urlencode() {
     # urlencode <string>
