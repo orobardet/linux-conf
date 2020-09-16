@@ -145,7 +145,7 @@ nnoremap t <C-]>
 " Statusline configuration
 set laststatus=2
 set statusline=%F%m%r%h%w\ [%3p%%]\ F4=WRAP\ F5=LINENUMS\ F6=Browser\ EOL=%{&ff}\ TYPE=%Y\ ENC=%{&fileencoding?&fileencoding:&encoding}%{$bomb}\ LN=%04l\ CL=%04v\ ASCII=%03.3b\ HEX=%02.2B
-hi StatusLine ctermfg=darkgray " ctermbg=black
+hi StatusLine ctermfg=darkgray ctermbg=black
 hi StatusLineNC cterm=none
 hi LineNr ctermfg=black
 hi CursorLineNr ctermfg=darkgray
