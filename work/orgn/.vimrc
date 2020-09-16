@@ -76,7 +76,7 @@ let g:airline_mode_map = {
 			\ '^S' : 'S',
 			\ }
 function! AirlineInit()
-	call airline#parts#define_text('ort_keys_help', 'F2:paste F4:wrap F5:num F6:browser')
+	call airline#parts#define_text('ort_keys_help', 'F2:paste F3:allchars F4:wrap F5:num F6:browser')
 	call airline#parts#define_accent('ort_keys_help', 'red')
 	call airline#parts#define_accent('ort_keys_help', 'bold')
 	let g:airline_section_c = airline#section#create_left(['file', 'ort_keys_help'])
@@ -111,16 +111,21 @@ set showtabline=2
 set completeopt=menu,menuone,preview,noselect,noinsert
 set autoindent
 set cindent
+set listchars=eol:↵,tab:——⇥,extends:>,precedes:<,space:·
 filetype plugin indent on
+" F3=toggle invisible characters
+noremap <F3> :set list!<CR>
+inoremap <F3> <C-o>:set list!<CR>
+cnoremap <F3> <C-c>:set list!<CR>
 nnoremap <F5> :set number! number?<CR>
 imap <F5> <C-o><F5>
 nnoremap <F4> :set wrap! wrap?<CR>
 imap <F4> <C-o><F4>
 nnoremap <silent> <F6> :NERDTreeToggle<CR>
-nnoremap <C-n> <Esc>:bnext<CR>
-nnoremap <C-p> <Esc>:bprev<CR>
-nnoremap <C-PageUp> <Esc>:bprev<CR>
-nnoremap <C-PageDown> <Esc>:bnext<CR>
+nnoremap <C-n> <Esc>:bnext!<CR>
+nnoremap <C-p> <Esc>:bprev!<CR>
+nnoremap <C-PageUp> <Esc>:bprev!<CR>
+nnoremap <C-PageDown> <Esc>:bnext!<CR>
 nnoremap <C-o> <Esc>:edit 
 nnoremap <C-q> <Esc>:bd<CR>
 nnoremap <C-Space> <Esc>:ALEComplete<CR>
@@ -144,7 +149,7 @@ nnoremap <C-l> <C-W>l
 nnoremap t <C-]>
 " Statusline configuration
 set laststatus=2
-set statusline=%F%m%r%h%w\ [%3p%%]\ F4=WRAP\ F5=LINENUMS\ F6=Browser\ EOL=%{&ff}\ TYPE=%Y\ ENC=%{&fileencoding?&fileencoding:&encoding}%{$bomb}\ LN=%04l\ CL=%04v\ ASCII=%03.3b\ HEX=%02.2B
+set statusline=%F%m%r%h%w\ [%3p%%]\ F2=PASTE\ F3=ALLCHARS\ F4=WRAP\ F5=LINENUMS\ F6=BROWSER\ EOL=%{&ff}\ TYPE=%Y\ ENC=%{&fileencoding?&fileencoding:&encoding}%{$bomb}\ LN=%04l\ CL=%04v\ ASCII=%03.3b\ HEX=%02.2B
 hi StatusLine ctermfg=darkgray ctermbg=black
 hi StatusLineNC cterm=none
 hi LineNr ctermfg=black
