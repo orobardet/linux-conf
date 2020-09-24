@@ -31,7 +31,8 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/vim-emoji'
 Plug 'tmux-plugins/vim-tmux'
-Plug 'w0rp/ale'
+Plug 'joshdick/onedark.vim'
+Plug 'dense-analysis/ale'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
@@ -53,12 +54,13 @@ augroup OmniCompletionSetup
 augroup END
 " yaml specific config
 augroup YamlConfig
-	au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml
+	au! BufNewFile,BufReadPost *.{yaml,yml,yamllint} set filetype=yaml
 	autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 augroup END
 let g:bufferline_echo = 0
 let g:airline_powerline_fonts = 1
-let g:airline_theme='distinguished'
+"let g:airline_theme='distinguished'
+let g:airline_theme='onedark'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'default'
 let g:airline_skip_empty_sections = 1
@@ -85,7 +87,21 @@ augroup mine | autocmd User AirlineAfterInit call AirlineInit() | augroup END
 
 let g:NERDTreeQuitOnOpen = 1
 
+if (has('termguicolors'))
+    set termguicolors
+endif
+if (has('autocmd') && !has('gui_running'))
+  augroup colorset
+    autocmd!
+    let s:white = { 'gui': '#ABB2BF', 'cterm': '145', 'cterm16' : '7' }
+    autocmd ColorScheme * call onedark#set_highlight('Normal', { 'fg': s:white }) " `bg` will not be styled since there is no `bg` setting
+  augroup END
+endif
+let g:onedark_terminal_italics=1
+let g:onedark_termcolors=256
+
 syntax on
+colorscheme onedark
 "set mouse=a
 set ttymouse=xterm
 set t_Co=256
@@ -102,6 +118,7 @@ set tabstop=4
 set expandtab
 set paste
 set encoding=utf-8
+scriptencoding utf-8
 set laststatus=2
 set cursorline
 set ignorecase
@@ -153,11 +170,11 @@ set statusline=%F%m%r%h%w\ [%3p%%]\ F2=PASTE\ F3=ALLCHARS\ F4=WRAP\ F5=LINENUMS\
 hi StatusLine ctermfg=darkgray ctermbg=black
 hi StatusLineNC cterm=none
 hi LineNr ctermfg=black
-hi CursorLineNr ctermfg=darkgray
+hi CursorLineNr ctermfg=darkgray guibg=#202020
 if $VIM_BG ==? 'light'
 	hi Cursorline ctermbg=188 guibg=lightgrey cterm=none
 else
-	hi Cursorline ctermbg=black guibg=black cterm=none
+    hi Cursorline guibg=#202020 cterm=none
 endif
 " Completion menu style
 hi Pmenu ctermbg=black ctermfg=gray
